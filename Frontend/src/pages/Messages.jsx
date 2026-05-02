@@ -152,7 +152,7 @@ const Messages = () => {
                       type="text" 
                       className="form-control bg-dark border-0 text-white shadow-none" 
                       placeholder="Type a message..." 
-                      style={{ borderRadius: '10px 0 0 10px', fontSize: '0.9rem', padding: '10px 15px' }}
+                      style={{ borderRadius: '10px 0 0 10px', fontSize: '16px', padding: '10px 15px' }}
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                     />
