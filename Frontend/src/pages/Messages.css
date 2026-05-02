@@ -1,0 +1,137 @@
+.messenger-wrapper {
+  height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 40px 0;
+}
+
+.messenger-container {
+  max-width: 1200px;
+  width: 75%;
+  height: 85vh;
+  background: #0f172a;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.messenger-header {
+  background: #1e293b;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.users-sidebar {
+  background: #111827;
+  overflow-y: auto;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+.user-item {
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.user-item:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4fc3f7, #a78bfa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  fontWeight: bold;
+  color: white;
+}
+
+.chat-area {
+  background: #0f172a;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header {
+  background: #0f172a;
+}
+
+.messages-list {
+  background: #0f172a;
+}
+
+.message-bubble {
+  position: relative;
+  max-width: 75%;
+  min-width: 100px;
+  padding: 10px 16px;
+  padding-bottom: 24px;
+  border-radius: 18px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  word-break: break-word;
+}
+
+.message-bubble.sent {
+  background: linear-gradient(135deg, #4fc3f7, #29b6f6);
+  color: #000;
+}
+
+.message-bubble.received {
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.message-meta {
+  position: absolute;
+  bottom: 4px;
+  right: 12px;
+  font-size: 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.sent .message-meta {
+  color: rgba(0,0,0,0.5);
+}
+
+.received .message-meta {
+  color: rgba(255,255,255,0.4);
+}
+
+.read-status {
+  font-size: 0.8rem;
+}
+
+.input-area {
+  background: #1e293b;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+@media (max-width: 768px) {
+  .messenger-wrapper {
+    padding: 0;
+  }
+
+  .messenger-container {
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+
+  .user-info {
+    display: block !important;
+  }
+}
+
