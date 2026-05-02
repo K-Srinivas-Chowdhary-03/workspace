@@ -62,9 +62,10 @@ const Notifications = () => {
       await API.delete(`/notifications/${id}`);
       toast.success('Notification deleted');
       setNotifications(prev => prev.filter(n => n._id !== id));
-      setShowModal(false);
     } catch (err) {
-      toast.error('Failed to delete notification');
+      toast.error(err.response?.data?.message || 'Failed to delete notification');
+    } finally {
+      setShowModal(false);
     }
   };
 
@@ -73,9 +74,10 @@ const Notifications = () => {
       await API.delete('/notifications');
       toast.success('All notifications cleared');
       setNotifications([]);
-      setShowModal(false);
     } catch (err) {
-      toast.error('Failed to clear notifications');
+      toast.error(err.response?.data?.message || 'Failed to clear notifications');
+    } finally {
+      setShowModal(false);
     }
   };
 
