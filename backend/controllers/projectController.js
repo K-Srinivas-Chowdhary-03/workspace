@@ -33,19 +33,28 @@ const getProjects = async (req, res) => {
       .populate('members', 'name email avatar')
       .sort({ createdAt: -1 });
 
-    // Attach progress to each project
-    const projectsWithProgress = await Promise.all(
-      projects.map(async (p) => {
-        if (p.status === 'completed') {
-          return { ...p.toObject(), progress: 100, taskCount: 0 };
-        }
-        const tasks = await Task.find({ project: p._id });
-        const total = tasks.length;
-        const completed = tasks.filter((t) => t.status === 'completed').length;
-        const progress = total === 0 ? 0 : Math.round((completed / total) * 100);
-        return { ...p.toObject(), progress, taskCount: total };
-      })
-    );
+    const projectIds = projects.map(p => p._id);
+    const allTasks = await Task.find({ project: { $in: projectIds } });
+
+    // Group tasks by project ID for fast lookup
+    const tasksByProject = allTasks.reduce((acc, task) => {
+      const pid = task.project.toString();
+      if (!acc[pid]) acc[pid] = [];
+      acc[pid].push(task);
+      return acc;
+    }, {});
+
+    const projectsWithProgress = projects.map(p => {
+      const pid = p._id.toString();
+      if (p.status === 'completed') {
+        return { ...p.toObject(), progress: 100, taskCount: tasksByProject[pid]?.length || 0 };
+      }
+      const pTasks = tasksByProject[pid] || [];
+      const total = pTasks.length;
+      const completed = pTasks.filter(t => t.status === 'completed').length;
+      const progress = total === 0 ? 0 : Math.round((completed / total) * 100);
+      return { ...p.toObject(), progress, taskCount: total };
+    });
 
     res.json(projectsWithProgress);
   } catch (err) {
