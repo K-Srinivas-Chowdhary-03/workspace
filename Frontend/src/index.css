@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #4fc3f7;
+  --secondary: #a78bfa;
+  --accent: #ffa726;
+  --success: #66bb6a;
+  --danger: #ef5350;
+  --bg-dark: #1a1a2e;
+  --bg-card: #1e2a3a;
+  --bg-card2: #243447;
+  --text-muted: rgba(255,255,255,0.9);
+  --text-dim: rgba(255,255,255,0.65);
+  --border: rgba(255,255,255,0.12);
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #1a1a2e;
+  color: #f1f5f9;
+  -webkit-font-smoothing: antialiased;
+}
+
+small, .text-muted {
+  color: var(--text-muted) !important;
+}
+
+.text-dim {
+  color: var(--text-dim) !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); border-radius: 10px; }
+::-webkit-scrollbar-thumb { background: rgba(79,195,247,0.3); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(79,195,247,0.5); }
+
+/* Form controls dark theme override */
+.form-control, .form-select {
+  color: white !important;
+}
+
+.form-control:focus, .form-select:focus {
+  background: rgba(255,255,255,0.08) !important;
+  border-color: rgba(79,195,247,0.5) !important;
+  box-shadow: 0 0 0 3px rgba(79,195,247,0.12) !important;
+  color: white !important;
+  outline: none;
+}
+
+.form-control::placeholder { color: rgba(255,255,255,0.3) !important; }
+
+/* Input group dark */
+.input-group-text {
+  color: inherit;
+}
+
+/* Dropdown */
+.dropdown-menu-dark {
+  background: #1e2a3a !important;
+}
+.dropdown-item:hover, .dropdown-item:focus {
+  background: rgba(255,255,255,0.07) !important;
+}
+
+/* Nav active */
+.navbar .nav-link.active {
+  color: var(--primary) !important;
+}
+.navbar .nav-link {
+  color: rgba(255,255,255,0.7) !important;
+  transition: color 0.2s;
+}
+.navbar .nav-link:hover {
+  color: white !important;
+}
+
+/* Smooth transitions */
+.btn, .card, input, select, textarea {
+  transition: all 0.2s ease;
+}
+
+/* Prevent white bg flash on selects in dark mode */
+select option {
+  background: #1e2a3a;
+  color: white;
+}
+
+/* Toast override */
+.Toastify__toast {
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* Animation keyframes */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.4s ease both;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .container-fluid { padding: 0 12px !important; }
+}
