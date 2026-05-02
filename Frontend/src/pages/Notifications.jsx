@@ -61,7 +61,7 @@ const Notifications = () => {
     try {
       await API.delete(`/notifications/${id}`);
       toast.success('Notification deleted');
-      setNotifications(notifications.filter(n => n._id !== id));
+      setNotifications(prev => prev.filter(n => n._id !== id));
       setShowModal(false);
     } catch (err) {
       toast.error('Failed to delete notification');

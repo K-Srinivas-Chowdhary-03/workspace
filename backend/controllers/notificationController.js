@@ -124,16 +124,13 @@ const handleNotificationAction = async (req, res) => {
 
 const deleteNotification = async (req, res) => {
   try {
-    const notification = await Notification.findById(req.params.id);
-    if (!notification) return res.status(404).json({ message: 'Notification not found' });
-    
-    if (notification.recipient.toString() !== req.user._id.toString()) {
-      return res.status(401).json({ message: 'Not authorized' });
+    const notification = await Notification.findOneAndDelete({ _id: req.params.id, recipient: req.user._id });
+    if (!notification) {
+      return res.status(404).json({ message: 'Notification not found or not authorized' });
     }
-
-    await notification.deleteOne();
     res.json({ message: 'Notification removed' });
   } catch (err) {
+    console.error('Delete notification error:', err);
     res.status(500).json({ message: err.message });
   }
 };
@@ -143,6 +140,7 @@ const clearAllNotifications = async (req, res) => {
     await Notification.deleteMany({ recipient: req.user._id });
     res.json({ message: 'All notifications cleared' });
   } catch (err) {
+    console.error('Clear all notifications error:', err);
     res.status(500).json({ message: err.message });
   }
 };

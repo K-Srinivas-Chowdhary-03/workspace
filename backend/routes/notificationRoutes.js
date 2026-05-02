@@ -7,8 +7,8 @@ router.use(protect);
 router.get('/', getNotifications);
 router.get('/unread', getUnreadCount);
 router.put('/:id/action', handleNotificationAction);
-router.delete('/:id', deleteNotification);
 router.delete('/', clearAllNotifications);
+router.delete('/:id', deleteNotification);
 
 
 module.exports = router;
