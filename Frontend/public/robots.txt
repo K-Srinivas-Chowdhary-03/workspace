@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://workspace-livid-five-52.vercel.app/sitemap.xml
