@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../api/axiosInstance';
 import { toast } from 'react-toastify';
-import { FaBell, FaCheck, FaTimes, FaInbox, FaArrowLeft, FaClock } from 'react-icons/fa';
+import { FaBell, FaCheck, FaTimes, FaInbox, FaArrowLeft, FaClock, FaTrash } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
+import ConfirmModal from '../components/ConfirmModal';
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [modalConfig, setModalConfig] = useState({ title: '', message: '', onConfirm: () => {} });
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -36,6 +39,46 @@ const Notifications = () => {
     }
   };
 
+  const confirmDelete = (id) => {
+    setModalConfig({
+      title: 'Delete Notification',
+      message: 'Are you sure you want to delete this notification? This action cannot be undone.',
+      onConfirm: () => deleteNotification(id)
+    });
+    setShowModal(true);
+  };
+
+  const confirmClearAll = () => {
+    setModalConfig({
+      title: 'Clear All Notifications',
+      message: 'Are you sure you want to clear all your notifications? This action cannot be undone.',
+      onConfirm: clearAllNotifications
+    });
+    setShowModal(true);
+  };
+
+  const deleteNotification = async (id) => {
+    try {
+      await API.delete(`/notifications/${id}`);
+      toast.success('Notification deleted');
+      setNotifications(notifications.filter(n => n._id !== id));
+      setShowModal(false);
+    } catch (err) {
+      toast.error('Failed to delete notification');
+    }
+  };
+
+  const clearAllNotifications = async () => {
+    try {
+      await API.delete('/notifications');
+      toast.success('All notifications cleared');
+      setNotifications([]);
+      setShowModal(false);
+    } catch (err) {
+      toast.error('Failed to clear notifications');
+    }
+  };
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -52,7 +95,17 @@ const Notifications = () => {
             <h2 className="text-white fw-bold mb-1">Notifications</h2>
             <p className="text-muted small">Stay updated with your team's activities</p>
           </div>
-          <div style={{ width: '60px' }} />
+          {notifications.length > 0 ? (
+            <button 
+              onClick={confirmClearAll}
+              className="btn d-flex align-items-center gap-2 px-3 py-2"
+              style={{ background: 'rgba(239,83,80,0.1)', color: '#ef5350', border: '1px solid rgba(239,83,80,0.2)', borderRadius: '12px', fontWeight: '600', fontSize: '0.85rem' }}
+            >
+              <FaTrash size={12} /> Clear All
+            </button>
+          ) : (
+            <div style={{ width: '100px' }} />
+          )}
         </div>
 
         {loading ? (
@@ -106,8 +159,18 @@ const Notifications = () => {
                           {n.message}
                         </p>
                       </div>
-                      <div className="text-muted d-flex align-items-center gap-1" style={{ fontSize: '0.75rem' }}>
-                        <FaClock size={11} /> {new Date(n.createdAt).toLocaleDateString()}
+                      <div className="d-flex flex-column align-items-end gap-2">
+                        <div className="text-muted d-flex align-items-center gap-1" style={{ fontSize: '0.75rem' }}>
+                          <FaClock size={11} /> {new Date(n.createdAt).toLocaleDateString()}
+                        </div>
+                        <button 
+                          onClick={() => confirmDelete(n._id)}
+                          className="btn btn-link text-white-50 p-0 hover-danger" 
+                          style={{ transition: 'color 0.2s' }}
+                          title="Delete notification"
+                        >
+                          <FaTrash size={14} />
+                        </button>
                       </div>
                     </div>
 
@@ -150,8 +213,17 @@ const Notifications = () => {
           </div>
         )}
       </div>
+      <ConfirmModal 
+        show={showModal}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        onConfirm={modalConfig.onConfirm}
+        onCancel={() => setShowModal(false)}
+        type="warning"
+      />
     </div>
   );
 };
 
 export default Notifications;
+

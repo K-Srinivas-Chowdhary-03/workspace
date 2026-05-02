@@ -122,4 +122,30 @@ const handleNotificationAction = async (req, res) => {
   }
 };
 
-module.exports = { getNotifications, handleNotificationAction, getUnreadCount };
+const deleteNotification = async (req, res) => {
+  try {
+    const notification = await Notification.findById(req.params.id);
+    if (!notification) return res.status(404).json({ message: 'Notification not found' });
+    
+    if (notification.recipient.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ message: 'Not authorized' });
+    }
+
+    await notification.deleteOne();
+    res.json({ message: 'Notification removed' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const clearAllNotifications = async (req, res) => {
+  try {
+    await Notification.deleteMany({ recipient: req.user._id });
+    res.json({ message: 'All notifications cleared' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports = { getNotifications, handleNotificationAction, getUnreadCount, deleteNotification, clearAllNotifications };
+
