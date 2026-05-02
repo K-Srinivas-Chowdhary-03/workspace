@@ -89,25 +89,25 @@ const Notifications = () => {
     }}>
       <div className="container" style={{ maxWidth: '900px' }}>
         {/* Header */}
-        <div className="d-flex align-items-center justify-content-between mb-5">
-          <button onClick={() => navigate(-1)} className="btn text-white-50 p-0 d-flex align-items-center gap-2 hover-white" style={{ background: 'none', border: 'none' }}>
+        <div className="mb-4">
+          <button onClick={() => navigate(-1)} className="btn text-white-50 p-0 d-flex align-items-center gap-2 hover-white mb-4" style={{ background: 'none', border: 'none' }}>
             <FaArrowLeft /> Back
           </button>
-          <div className="text-center">
-            <h2 className="text-white fw-bold mb-1">Notifications</h2>
-            <p className="text-muted small">Stay updated with your team's activities</p>
+          <div className="d-flex align-items-center justify-content-between">
+            <div>
+              <h2 className="text-white fw-bold mb-1" style={{ fontSize: '1.5rem' }}>Notifications</h2>
+              <p className="text-muted small mb-0">Stay updated with your team's activities</p>
+            </div>
+            {notifications.length > 0 && (
+              <button 
+                onClick={confirmClearAll}
+                className="btn d-flex align-items-center gap-2 px-3 py-2"
+                style={{ background: 'rgba(239,83,80,0.1)', color: '#ef5350', border: '1px solid rgba(239,83,80,0.2)', borderRadius: '12px', fontWeight: '600', fontSize: '0.85rem' }}
+              >
+                <FaTrash size={12} /> Clear All
+              </button>
+            )}
           </div>
-          {notifications.length > 0 ? (
-            <button 
-              onClick={confirmClearAll}
-              className="btn d-flex align-items-center gap-2 px-3 py-2"
-              style={{ background: 'rgba(239,83,80,0.1)', color: '#ef5350', border: '1px solid rgba(239,83,80,0.2)', borderRadius: '12px', fontWeight: '600', fontSize: '0.85rem' }}
-            >
-              <FaTrash size={12} /> Clear All
-            </button>
-          ) : (
-            <div style={{ width: '100px' }} />
-          )}
         </div>
 
         {loading ? (
